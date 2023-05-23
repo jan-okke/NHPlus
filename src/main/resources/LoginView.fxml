@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.20001220703125" minWidth="10.0" prefWidth="67.40001220703124" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.60002441406243" minWidth="10.0" prefWidth="453.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.60002441406243" minWidth="10.0" prefWidth="81.79999999999995" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="127.00000610351563" minHeight="10.0" prefHeight="87.99998779296875" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="263.0000366210937" minHeight="10.0" prefHeight="261.4" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.79996337890623" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <center>
+            <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="92.80000915527344" minHeight="10.0" prefHeight="58.79999999999999" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="61.59998168945313" minHeight="10.0" prefHeight="40.79997863769532" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="15.0" left="5.0" right="5.0" />
+                     </GridPane.margin>
+                  </PasswordField>
+                  <TextField GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" right="5.0" top="15.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <Button layoutX="9.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="40.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button layoutX="151.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Abbrechen" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="40.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Label text="Benutzername">
+                     <GridPane.margin>
+                        <Insets left="80.0" top="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Passwort" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="15.0" left="80.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+         </center>
+         <bottom>
+            <Label text="Falscher Benutzername oder Passwort." textFill="RED" visible="false" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </children>
+</GridPane>
