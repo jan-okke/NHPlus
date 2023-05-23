@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="controller.LoginWindowController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.20001220703125" minWidth="10.0" prefWidth="67.40001220703124" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.60002441406243" minWidth="10.0" prefWidth="453.0" />
@@ -35,22 +35,22 @@
                 <RowConstraints maxHeight="61.59998168945313" minHeight="10.0" prefHeight="40.79997863769532" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <PasswordField fx:id="PasswordField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="15.0" left="5.0" right="5.0" />
                      </GridPane.margin>
                   </PasswordField>
-                  <TextField GridPane.columnIndex="1">
+                  <TextField fx:id="UsernameField" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" top="15.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button layoutX="9.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button layoutX="9.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="136.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="40.0" top="5.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button layoutX="151.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Abbrechen" GridPane.rowIndex="2">
+                  <Button layoutX="151.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="136.0" text="Abbrechen" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="40.0" top="5.0" />
                      </GridPane.margin>
@@ -69,7 +69,7 @@
             </GridPane>
          </center>
          <bottom>
-            <Label text="Falscher Benutzername oder Passwort." textFill="RED" visible="false" BorderPane.alignment="CENTER" />
+            <Label fx:id="ErrorMessage" text="Falscher Benutzername oder Passwort." textFill="RED" visible="false" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </children>
