@@ -51,4 +51,10 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - Passwort: SA
 - Bitte nicht in die Datenbank schauen, während die Applikation läuft. Das sorgt leider für einen Lock, der erst wieder verschwindet, wenn IntelliJ neugestartet wird!
 
+## Testfälle
+### Userstory 1 - Assets löschen
+
+- View geöffnet, Vermögensstand wurde nicht mehr angezeigt
+- Nutzer angelegt, bearbeitet und gelöscht, funktionierte weiterhin.
+
 ## Benutzername und Passwort für das Login
