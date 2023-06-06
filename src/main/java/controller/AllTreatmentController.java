@@ -135,6 +135,7 @@ public class AllTreatmentController {
     @FXML
     public void handleDelete(){
         int index = this.tableView.getSelectionModel().getSelectedIndex();
+        //TODO: Einträge sollen nur Archiviert werden
         Treatment t = this.tableviewContent.remove(index);
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
