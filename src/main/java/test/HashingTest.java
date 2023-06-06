@@ -1,15 +1,19 @@
 package test;
 
+import datastorage.DAOFactory;
+import model.LoginData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.Hashing;
+
+import java.sql.SQLException;
 
 public class HashingTest {
 
     @Test
     public void TestHashing() {
         String salt = Hashing.CreateSalt(10);
-        String password = "TestPasswort!";
+        String password = "123";
 
         String hash = Hashing.CalculateHash(password, salt);
 
