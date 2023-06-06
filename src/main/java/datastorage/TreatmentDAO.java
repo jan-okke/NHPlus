@@ -25,6 +25,13 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getRemarks());
     }
 
+    protected String getCreateArchiveStatementString(Treatment treatment) {
+        return String.format("INSERT INTO treatment_archive (pid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
+                        "(%d, '%s', '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
+                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
+                treatment.getRemarks(), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
+    }
+
     @Override
     protected String getReadByIDStatementString(long key) {
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
@@ -75,7 +82,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
-        Treatment object = null;
+        //Treatment object = null;
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllTreatmentsOfOnePatientByPid(pid));
         list = getListFromResultSet(result);
@@ -86,8 +93,21 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
 
+    /*
     public void deleteByPid(long key) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
+    }
+     */
+    public void archiveByTid(long key) throws SQLException {
+        Statement st = conn.createStatement();
+        //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
+        ResultSet result = st.executeQuery(getReadByIDStatementString(key));
+        if(result.next()){
+            Treatment treatmentArchive = getInstanceFromResultSet(result);
+            st.executeUpdate(getCreateArchiveStatementString(treatmentArchive));
+            st.executeUpdate(String.format("Delete FROM treatment WHERE tid= %d", key));
+        }
+
     }
 }
