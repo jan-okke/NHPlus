@@ -138,8 +138,9 @@ public class AllTreatmentController {
         //TODO: Einträge sollen nur Archiviert werden
         Treatment t = this.tableviewContent.remove(index);
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+
         try {
-            dao.deleteById(t.getTid());
+            dao.archiveByTid(t.getTid());
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -168,7 +168,7 @@ public class AllPatientController {
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            tDao.deleteByPid(selectedItem.getPid());
+            tDao.archiveByTid(selectedItem.getPid());
             dao.deleteById(selectedItem.getPid());
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
