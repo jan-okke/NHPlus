@@ -37,6 +37,10 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
     }
 
+    protected String getReadByPIDStatementString(long key) {
+        return String.format("SELECT * FROM treatment WHERE pid = %d", key);
+    }
+
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
@@ -99,6 +103,19 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }
      */
+
+    public void archiveByPid(long key) throws SQLException {
+        Statement st = conn.createStatement();
+        //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
+        ResultSet result = st.executeQuery(getReadByPIDStatementString(key));
+        if(result.next()){
+            Treatment treatmentArchive = getInstanceFromResultSet(result);
+            st.executeUpdate(getCreateArchiveStatementString(treatmentArchive));
+            st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
+        }
+
+    }
+
     public void archiveByTid(long key) throws SQLException {
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
