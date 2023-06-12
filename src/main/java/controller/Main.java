@@ -1,6 +1,8 @@
 package controller;
 
 import datastorage.ConnectionBuilder;
+import datastorage.DAOFactory;
+import datastorage.TreatmentDAO;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -23,7 +26,17 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        checkAndDeleteArchives();
         loginWindow();
+    }
+
+    private void checkAndDeleteArchives() {
+        DAOFactory dao = DAOFactory.getDAOFactory();
+        try {
+            dao.createTreatmentDAO().deleteArchivedTreatmentsAfterYears(10);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void loginWindow() {
