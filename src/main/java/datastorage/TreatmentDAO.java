@@ -2,6 +2,8 @@ package datastorage;
 
 import model.Treatment;
 import utils.DateConverter;
+
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,6 +110,18 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             st.executeUpdate(getCreateArchiveStatementString(treatmentArchive));
             st.executeUpdate(String.format("Delete FROM treatment WHERE tid= %d", key));
         }
+    }
 
+    public void deleteArchivedTreatmentsAfterYears(int years) throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery("SELECT * FROM treatment_archive");
+        if (result.next()) {
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(8));
+            if (date.plusYears(years).isBefore(LocalDate.now())) {
+                long tid = result.getLong(1);
+                Statement deleteStatement = conn.createStatement();
+                deleteStatement.executeUpdate(String.format("DELETE FROM treatment_archive WHERE tid = %d", tid));
+            }
+        }
     }
 }
