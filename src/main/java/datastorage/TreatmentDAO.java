@@ -3,8 +3,8 @@ package datastorage;
 import exceptions.InvalidSQLException;
 import model.Treatment;
 import utils.DateConverter;
+import utils.Validation;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

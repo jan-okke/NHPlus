@@ -1,4 +1,4 @@
-package datastorage;
+package utils;
 
 import exceptions.InvalidSQLException;
 import model.Caregiver;

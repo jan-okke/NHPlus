@@ -2,7 +2,7 @@ package datastorage;
 
 import exceptions.InvalidSQLException;
 import model.Caregiver;
-import model.LoginData;
+import utils.Validation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
