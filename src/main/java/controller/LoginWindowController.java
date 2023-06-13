@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The controller for the Login Window.
+ */
 public class LoginWindowController
 {
     @FXML
@@ -27,6 +30,11 @@ public class LoginWindowController
 
     @FXML
     private javafx.scene.control.PasswordField PasswordField;
+
+    /**
+     * On clicking cancel.
+     * @param e The event.
+     */
     @FXML
     private void handleCancel(javafx.event.ActionEvent e) {
         ConnectionBuilder.closeConnection();
@@ -34,6 +42,10 @@ public class LoginWindowController
         System.exit(0);
     }
 
+    /**
+     * On clicking Login.
+     * @param e The event.
+     */
     @FXML
     private void handleLogin(javafx.event.ActionEvent e) {
         String username = UsernameField.getText();
@@ -65,6 +77,9 @@ public class LoginWindowController
 
     }
 
+    /**
+     * Method to open the Main Window.
+     */
     private void mainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));

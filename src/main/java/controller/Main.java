@@ -17,12 +17,19 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * The main class for the application.
+ */
 public class Main extends Application {
 
 
     private Stage primaryStage;
 
 
+    /**
+     * The start of the GUI.
+     * @param primaryStage The first stage.
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -30,6 +37,9 @@ public class Main extends Application {
         loginWindow();
     }
 
+    /**
+     * The method for checking and deleting archives on startup.
+     */
     private void checkAndDeleteArchives() {
         DAOFactory dao = DAOFactory.getDAOFactory();
         try {
@@ -39,6 +49,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * The method to open the loginWindow.
+     */
     public void loginWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
@@ -58,7 +71,10 @@ public class Main extends Application {
     }
 
 
-
+    /**
+     * The entry point.
+     * @param args Startup args.
+     */
     public static void main(String[] args) {
         launch(args);
     }
