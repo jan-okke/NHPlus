@@ -2,12 +2,14 @@ package datastorage;
 
 import exceptions.InvalidSQLException;
 import model.Patient;
+import model.Treatment;
 import utils.DateConverter;
 import utils.Validation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -34,6 +36,11 @@ public class PatientDAO extends DAOimp<Patient> {
         Validation.validatePatient(patient);
         return String.format("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES ('%s', '%s', '%s', '%s', '%s')",
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
+    }
+
+    protected String getCreateArchiveStatementString(Patient patient) {
+        return String.format("INSERT INTO patient_archive (firstname, surname, dateOfBirth, carelevel, roomnumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
     }
 
     /**
@@ -112,5 +119,17 @@ public class PatientDAO extends DAOimp<Patient> {
     protected String getDeleteStatementString(long key) throws InvalidSQLException {
         Validation.validateLong(key);
         return String.format("Delete FROM patient WHERE pid=%d", key);
+    }
+
+    public void archiveByPid(long key) throws SQLException {
+        Statement st = conn.createStatement();
+        //Liest aus Patient einen Eintrag aus, konvertiert ihn in ein Patient objekt und schreibt dieses in die Patient_Archive Tabelle.
+        ResultSet result = st.executeQuery(getReadByIDStatementString(key));
+        if(result.next()){
+            Patient patientArchive = getInstanceFromResultSet(result);
+            st.executeUpdate(getCreateArchiveStatementString(patientArchive));
+            st.executeUpdate(String.format("Delete FROM patient WHERE pid= %d", key));
+        }
+
     }
 }

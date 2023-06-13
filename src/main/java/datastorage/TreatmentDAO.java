@@ -68,12 +68,18 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
     }
 
+
+    protected String getReadByPIDStatementString(long key) {
+        return String.format("SELECT * FROM treatment WHERE pid = %d", key);
+    }
+  
     /**
      * Parses the result into a Treatment object.
      * @param result The result from the select statement.
      * @return The Treatment object parsed from the result.
      * @throws SQLException
      */
+
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
@@ -168,15 +174,26 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Validation.validateLong(pid);
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
+  
+    public void archiveByPid(long key) throws SQLException {
+        Statement st = conn.createStatement();
+        //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
+        ResultSet result = st.executeQuery(getReadByPIDStatementString(key));
+        if(result.next()){
+            Treatment treatmentArchive = getInstanceFromResultSet(result);
+            st.executeUpdate(getCreateArchiveStatementString(treatmentArchive));
+            st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
+        }
 
-    /**
+    }
+    
+  /**
      * Archives a treatment by its primary key.
      * @param key The Treatment ID primary key to archive.
      * @throws SQLException
      * @throws InvalidSQLException
      */
     public void archiveByTid(long key) throws SQLException, InvalidSQLException {
-        Validation.validateLong(key);
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));
