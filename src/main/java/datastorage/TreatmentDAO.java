@@ -14,12 +14,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access methods for Treatment.
+ */
 public class TreatmentDAO extends DAOimp<Treatment> {
 
+    /**
+     * Creates a new TreatmentDAO with an existing connection.
+     * @param conn The connection.
+     */
     public TreatmentDAO(Connection conn) {
         super(conn);
     }
 
+    /**
+     * Creates a SQL string for creating a treatment.
+     * @param treatment The treatment to get the creation SQL for.
+     * @return The SQL string for creating the treatment.
+     * @throws InvalidSQLException
+     */
     @Override
     protected String getCreateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
@@ -29,6 +42,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getRemarks());
     }
 
+    /**
+     * Creates a SQL string for creating an archive entry.
+     * @param treatment The treatment to archive.
+     * @return The SQL string for creating an archive entry.
+     * @throws InvalidSQLException
+     */
     protected String getCreateArchiveStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
         return String.format("INSERT INTO treatment_archive (pid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
@@ -37,12 +56,24 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getRemarks(), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
     }
 
+    /**
+     * Creates a SQL string for selecting from treatments at the given key.
+     * @param key The primary key from the treatments table.
+     * @return the SQL string for selecting from treatments at the given key.
+     * @throws InvalidSQLException
+     */
     @Override
     protected String getReadByIDStatementString(long key) throws InvalidSQLException {
         Validation.validateLong(key);
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
     }
 
+    /**
+     * Parses the result into a Treatment object.
+     * @param result The result from the select statement.
+     * @return The Treatment object parsed from the result.
+     * @throws SQLException
+     */
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
@@ -53,11 +84,21 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return m;
     }
 
+    /**
+     * Creates the select all SQL statement.
+     * @return The select all SQL statement.
+     */
     @Override
     protected String getReadAllStatementString() {
         return "SELECT * FROM treatment";
     }
 
+    /**
+     * Parses a result into multiple treatments.
+     * @param result The result from the select statement.
+     * @return A list of all treatments found in the result.
+     * @throws SQLException
+     */
     @Override
     protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
@@ -73,6 +114,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
+    /**
+     * Creates a SQL string for updating a treatment object.
+     * @param treatment The adjusted treatment.
+     * @return The SQL string for updating the treatment object.
+     * @throws InvalidSQLException
+     */
     @Override
     protected String getUpdateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
@@ -82,12 +129,25 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getTid());
     }
 
+    /**
+     * Creates a SQL statement for deleting from treatments at the given key.
+     * @param key The TID primary key.
+     * @return The SQL statement for deleting at the given key.
+     * @throws InvalidSQLException
+     */
     @Override
     protected String getDeleteStatementString(long key) throws InvalidSQLException {
         Validation.validateLong(key);
         return String.format("Delete FROM treatment WHERE tid= %d", key);
     }
 
+    /**
+     * Gets all treatments from a given patient by its ID.
+     * @param pid The Patient ID primary key.
+     * @return A list of treatments the patient with the given ID has.
+     * @throws SQLException
+     * @throws InvalidSQLException
+     */
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException, InvalidSQLException {
         Validation.validateLong(pid);
         ArrayList<Treatment> list = new ArrayList<Treatment>();
@@ -98,10 +158,23 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
+    /**
+     * Gets a SQL statement string to get all treatments for a given patient.
+     * @param pid The Patient ID primary key.
+     * @return The SQL string to get all treatments for a given patient.
+     * @throws InvalidSQLException
+     */
     private String getReadAllTreatmentsOfOnePatientByPid(long pid) throws InvalidSQLException {
         Validation.validateLong(pid);
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
+
+    /**
+     * Archives a treatment by its primary key.
+     * @param key The Treatment ID primary key to archive.
+     * @throws SQLException
+     * @throws InvalidSQLException
+     */
     public void archiveByTid(long key) throws SQLException, InvalidSQLException {
         Validation.validateLong(key);
         Statement st = conn.createStatement();
@@ -114,6 +187,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         }
     }
 
+    /**
+     * Automatically deletes entries if they are older than a given amount of years.
+     * @param years The years after which an entry should be deleted.
+     * @throws SQLException
+     */
     public void deleteArchivedTreatmentsAfterYears(int years) throws SQLException {
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery("SELECT * FROM treatment_archive");

@@ -9,6 +9,11 @@ import java.util.Arrays;
 
 public class Hashing {
 
+    /**
+     * Generates a salt with the length of a given size.
+     * @param size The length of the salt.
+     * @return The generated salt.
+     */
     public static String CreateSalt(int size) {
         SecureRandom random = new SecureRandom();
 
@@ -17,6 +22,12 @@ public class Hashing {
         return new String(salt);
     }
 
+    /**
+     * Calculates a hash for a given password and a given salt.
+     * @param password The password to hash.
+     * @param salt The salt for the password.
+     * @return The hash value for password + salt.
+     */
     public static String CalculateHash(String password, String salt) {
         char[] passwordChars = password.toCharArray();
         byte[] saltBytes = salt.getBytes();
