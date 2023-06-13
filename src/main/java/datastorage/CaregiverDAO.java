@@ -1,7 +1,8 @@
 package datastorage;
 
+import exceptions.InvalidSQLException;
 import model.Caregiver;
-import model.LoginData;
+import utils.Validation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,12 +16,14 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     }
 
     @Override
-    protected String getCreateStatementString(Caregiver caregiver) {
+    protected String getCreateStatementString(Caregiver caregiver) throws InvalidSQLException {
+        Validation.validateCaregiver(caregiver);
         return String.format("INSERT INTO caregiver (firstname, surname, phonenumber) VALUES ('%s', '%s', '%s')", caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber());
     }
 
     @Override
-    protected String getReadByIDStatementString(long key) {
+    protected String getReadByIDStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("SELECT * FROM caregiver WHERE cid = '%d'", key);
     }
 
@@ -46,12 +49,14 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     }
 
     @Override
-    protected String getUpdateStatementString(Caregiver caregiver) {
+    protected String getUpdateStatementString(Caregiver caregiver) throws InvalidSQLException {
+        Validation.validateCaregiver(caregiver);
         return String.format("UPDATE caregiver SET firstname = '%s', surname = '%s', phonenumber = '%s' WHERE cid = '%d'", caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber(), caregiver.getCid());
     }
 
     @Override
-    protected String getDeleteStatementString(long key) {
+    protected String getDeleteStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("DELETE FROM caregiver WHERE cid = '%d'", key);
     }
 }

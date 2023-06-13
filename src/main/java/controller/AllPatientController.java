@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -138,7 +139,7 @@ public class AllPatientController {
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
         try {
             dao.update(t.getRowValue());
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }
@@ -171,7 +172,7 @@ public class AllPatientController {
             tDao.archiveByTid(selectedItem.getPid());
             dao.deleteById(selectedItem.getPid());
             this.tableView.getItems().remove(selectedItem);
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }
@@ -190,7 +191,7 @@ public class AllPatientController {
         try {
             Patient p = new Patient(firstname, surname, date, carelevel, room);
             dao.create(p);
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
         readAllAndShowInTableView();

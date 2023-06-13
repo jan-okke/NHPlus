@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
+import exceptions.InvalidSQLException;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -66,7 +67,7 @@ public class NewTreatmentController {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
             dao.create(treatment);
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }

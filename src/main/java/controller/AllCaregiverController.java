@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.CaregiverDAO;
 import datastorage.DAOFactory;
+import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,7 +54,7 @@ public class AllCaregiverController {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         try {
             dao.create(new Caregiver(txfFirstname.getText(), txfSurname.getText(), txfTelephone.getText()));
-        } catch (SQLException ex) {
+        } catch (SQLException | InvalidSQLException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();
@@ -85,7 +86,7 @@ public class AllCaregiverController {
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
             dao.deleteById(selectedItem.getCid());
-        } catch (SQLException ex) {
+        } catch (SQLException | InvalidSQLException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();
