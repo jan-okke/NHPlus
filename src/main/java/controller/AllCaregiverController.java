@@ -17,6 +17,9 @@ import model.Caregiver;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The controller for the caregivers.
+ */
 public class AllCaregiverController {
 
     public TextField txfFirstname;
@@ -33,6 +36,9 @@ public class AllCaregiverController {
     private ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
     private CaregiverDAO dao;
 
+    /**
+     * Initialization of the window.
+     */
     public void initialize() {
         readAllAndShowInTableView();
 
@@ -50,6 +56,11 @@ public class AllCaregiverController {
 
         this.tableView.setItems(this.tableviewContent);
     }
+
+    /**
+     * Handling adding a caregiver.
+     * @param e The event.
+     */
     public void handleAddCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         try {
@@ -61,12 +72,18 @@ public class AllCaregiverController {
         clearTextfields();
     }
 
+    /**
+     * Clearing the text fields.
+     */
     private void clearTextfields() {
         this.txfFirstname.clear();
         this.txfSurname.clear();
         this.txfTelephone.clear();
     }
 
+    /**
+     * Handling reading and displaying all Caregiver in the table.
+     */
     private void readAllAndShowInTableView() {
         this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createCaregiverDAO();
@@ -81,6 +98,10 @@ public class AllCaregiverController {
         }
     }
 
+    /**
+     * The handling of deleting a caregiver.
+     * @param e The event.
+     */
     public void handleDeleteCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();

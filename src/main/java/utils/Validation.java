@@ -11,6 +11,11 @@ public class Validation {
     // unterschiedliche Fälle von or OR Or oR abzudecken
     private static final String[] invalidSigns = new String[] {";", "\\", "or"};
 
+    /**
+     * Validates a long, and throws an exception if malformed.
+     * @param l The long to validate.
+     * @throws InvalidSQLException
+     */
     public static void validateLong(long l) throws InvalidSQLException {
         if (l < 0) {
             throw new InvalidSQLException();
@@ -18,6 +23,11 @@ public class Validation {
 
     }
 
+    /**
+     * Validates a string, and throws an exception if malformed.
+     * @param s The string to validate.
+     * @throws InvalidSQLException
+     */
     public static void validateString(String s) throws InvalidSQLException {
         for (String invalid : invalidSigns) {
             if (s.toLowerCase().contains(invalid)) {
@@ -26,29 +36,44 @@ public class Validation {
         }
     }
 
-    public static void validateTreatment(Treatment t) throws InvalidSQLException {
-        validateLong(t.getPid());
-        validateLong(t.getTid());
-        validateString(t.getRemarks());
-        validateString(t.getBegin());
-        validateString(t.getDescription());
-        validateString(t.getEnd());
-        validateString(t.getDate());
+    /**
+     * Validates a treatment, and throws an exception if malformed.
+     * @param treatment The treatment to validate.
+     * @throws InvalidSQLException
+     */
+    public static void validateTreatment(Treatment treatment) throws InvalidSQLException {
+        validateLong(treatment.getPid());
+        validateLong(treatment.getTid());
+        validateString(treatment.getRemarks());
+        validateString(treatment.getBegin());
+        validateString(treatment.getDescription());
+        validateString(treatment.getEnd());
+        validateString(treatment.getDate());
     }
 
-    public static void validatePatient(Patient p) throws InvalidSQLException {
-        validateLong(p.getPid());
-        validateString(p.getCareLevel());
-        validateString(p.getDateOfBirth());
-        validateString(p.getRoomnumber());
-        validateString(p.getFirstName());
-        validateString(p.getSurname());
+    /**
+     * Validates a patient, and throws an exception if malformed.
+     * @param patient The patient to validate.
+     * @throws InvalidSQLException
+     */
+    public static void validatePatient(Patient patient) throws InvalidSQLException {
+        validateLong(patient.getPid());
+        validateString(patient.getCareLevel());
+        validateString(patient.getDateOfBirth());
+        validateString(patient.getRoomnumber());
+        validateString(patient.getFirstName());
+        validateString(patient.getSurname());
     }
 
-    public static void validateCaregiver(Caregiver c) throws InvalidSQLException {
-        validateLong(c.getCid());
-        validateString(c.getPhoneNumber());
-        validateString(c.getFirstName());
-        validateString(c.getSurname());
+    /**
+     * Validates a caregiver, and throws an exception if malformed.
+     * @param caregiver The caregiver to validate.
+     * @throws InvalidSQLException
+     */
+    public static void validateCaregiver(Caregiver caregiver) throws InvalidSQLException {
+        validateLong(caregiver.getCid());
+        validateString(caregiver.getPhoneNumber());
+        validateString(caregiver.getFirstName());
+        validateString(caregiver.getSurname());
     }
 }
