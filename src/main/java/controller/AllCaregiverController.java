@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.CaregiverDAO;
 import datastorage.DAOFactory;
+import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,9 @@ import model.Caregiver;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The controller for the caregivers.
+ */
 public class AllCaregiverController {
 
     public TextField txfFirstname;
@@ -32,6 +36,9 @@ public class AllCaregiverController {
     private ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
     private CaregiverDAO dao;
 
+    /**
+     * Initialization of the window.
+     */
     public void initialize() {
         readAllAndShowInTableView();
 
@@ -49,23 +56,34 @@ public class AllCaregiverController {
 
         this.tableView.setItems(this.tableviewContent);
     }
+
+    /**
+     * Handling adding a caregiver.
+     * @param e The event.
+     */
     public void handleAddCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         try {
             dao.create(new Caregiver(txfFirstname.getText(), txfSurname.getText(), txfTelephone.getText()));
-        } catch (SQLException ex) {
+        } catch (SQLException | InvalidSQLException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();
         clearTextfields();
     }
 
+    /**
+     * Clearing the text fields.
+     */
     private void clearTextfields() {
         this.txfFirstname.clear();
         this.txfSurname.clear();
         this.txfTelephone.clear();
     }
 
+    /**
+     * Handling reading and displaying all Caregiver in the table.
+     */
     private void readAllAndShowInTableView() {
         this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createCaregiverDAO();
@@ -80,12 +98,16 @@ public class AllCaregiverController {
         }
     }
 
+    /**
+     * The handling of deleting a caregiver.
+     * @param e The event.
+     */
     public void handleDeleteCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
             dao.deleteById(selectedItem.getCid());
-        } catch (SQLException ex) {
+        } catch (SQLException | InvalidSQLException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();

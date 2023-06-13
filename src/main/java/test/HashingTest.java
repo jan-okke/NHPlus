@@ -8,8 +8,14 @@ import utils.Hashing;
 
 import java.sql.SQLException;
 
+/**
+ * Test methods for hashing.
+ */
 public class HashingTest {
 
+    /**
+     * Hashing test.
+     */
     @Test
     public void TestHashing() {
         String salt = Hashing.CreateSalt(10);
