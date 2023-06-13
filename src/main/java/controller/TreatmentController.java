@@ -3,6 +3,7 @@ package controller;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import exceptions.InvalidSQLException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -45,7 +46,7 @@ public class TreatmentController {
             this.patient = pDao.read((int) treatment.getPid());
             this.treatment = treatment;
             showData();
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }
@@ -77,7 +78,7 @@ public class TreatmentController {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
             dao.update(treatment);
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }

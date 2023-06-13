@@ -1,5 +1,6 @@
 package datastorage;
 
+import exceptions.InvalidSQLException;
 import model.Treatment;
 import utils.DateConverter;
 
@@ -20,14 +21,16 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getCreateStatementString(Treatment treatment) {
+    protected String getCreateStatementString(Treatment treatment) throws InvalidSQLException {
+        Validation.validateTreatment(treatment);
         return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
                 "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
                 treatment.getRemarks());
     }
 
-    protected String getCreateArchiveStatementString(Treatment treatment) {
+    protected String getCreateArchiveStatementString(Treatment treatment) throws InvalidSQLException {
+        Validation.validateTreatment(treatment);
         return String.format("INSERT INTO treatment_archive (pid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
                         "(%d, '%s', '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
@@ -35,7 +38,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getReadByIDStatementString(long key) {
+    protected String getReadByIDStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("SELECT * FROM treatment WHERE tid = %d", key);
     }
 
@@ -70,7 +74,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getUpdateStatementString(Treatment treatment) {
+    protected String getUpdateStatementString(Treatment treatment) throws InvalidSQLException {
+        Validation.validateTreatment(treatment);
         return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
                 "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
@@ -78,11 +83,13 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
-    protected String getDeleteStatementString(long key) {
+    protected String getDeleteStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("Delete FROM treatment WHERE tid= %d", key);
     }
 
-    public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
+    public List<Treatment> readTreatmentsByPid(long pid) throws SQLException, InvalidSQLException {
+        Validation.validateLong(pid);
         ArrayList<Treatment> list = new ArrayList<Treatment>();
         //Treatment object = null;
         Statement st = conn.createStatement();
@@ -91,17 +98,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
-    private String getReadAllTreatmentsOfOnePatientByPid(long pid){
+    private String getReadAllTreatmentsOfOnePatientByPid(long pid) throws InvalidSQLException {
+        Validation.validateLong(pid);
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
-
-    /*
-    public void deleteByPid(long key) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
-    }
-     */
-    public void archiveByTid(long key) throws SQLException {
+    public void archiveByTid(long key) throws SQLException, InvalidSQLException {
+        Validation.validateLong(key);
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));

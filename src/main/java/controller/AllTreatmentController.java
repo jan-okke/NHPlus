@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -117,7 +118,7 @@ public class AllTreatmentController {
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | InvalidSQLException e) {
                 e.printStackTrace();
             }
         }
@@ -141,7 +142,7 @@ public class AllTreatmentController {
 
         try {
             dao.archiveByTid(t.getTid());
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidSQLException e) {
             e.printStackTrace();
         }
     }

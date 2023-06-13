@@ -1,5 +1,6 @@
 package datastorage;
 
+import exceptions.InvalidSQLException;
 import model.Patient;
 import utils.DateConverter;
 import java.sql.Connection;
@@ -27,7 +28,8 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getCreateStatementString(Patient patient) {
+    protected String getCreateStatementString(Patient patient) throws InvalidSQLException {
+        Validation.validatePatient(patient);
         return String.format("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES ('%s', '%s', '%s', '%s', '%s')",
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
     }
@@ -38,7 +40,8 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getReadByIDStatementString(long key) {
+    protected String getReadByIDStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("SELECT * FROM patient WHERE pid = %d", key);
     }
 
@@ -91,7 +94,8 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getUpdateStatementString(Patient patient) {
+    protected String getUpdateStatementString(Patient patient) throws InvalidSQLException {
+        Validation.validatePatient(patient);
         return String.format("UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
                 "roomnumber = '%s' WHERE pid = %d", patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
                 patient.getCareLevel(), patient.getRoomnumber(), patient.getPid());
@@ -103,7 +107,8 @@ public class PatientDAO extends DAOimp<Patient> {
      * @return <code>String</code> with the generated SQL.
      */
     @Override
-    protected String getDeleteStatementString(long key) {
+    protected String getDeleteStatementString(long key) throws InvalidSQLException {
+        Validation.validateLong(key);
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
 }

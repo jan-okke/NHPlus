@@ -1,5 +1,7 @@
 package datastorage;
 
+import exceptions.InvalidSQLException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +17,13 @@ public abstract class DAOimp<T> implements DAO<T>{
     }
 
     @Override
-    public void create(T t) throws SQLException {
+    public void create(T t) throws SQLException, InvalidSQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getCreateStatementString(t));
     }
 
     @Override
-    public T read(long key) throws SQLException {
+    public T read(long key) throws SQLException, InvalidSQLException {
         T object = null;
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));
@@ -42,20 +44,20 @@ public abstract class DAOimp<T> implements DAO<T>{
     }
 
     @Override
-    public void update(T t) throws SQLException {
+    public void update(T t) throws SQLException, InvalidSQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getUpdateStatementString(t));
     }
 
     @Override
-    public void deleteById(long key) throws SQLException {
+    public void deleteById(long key) throws SQLException, InvalidSQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(getDeleteStatementString(key));
     }
 
-    protected abstract String getCreateStatementString(T t);
+    protected abstract String getCreateStatementString(T t) throws InvalidSQLException;
 
-    protected abstract String getReadByIDStatementString(long key);
+    protected abstract String getReadByIDStatementString(long key) throws InvalidSQLException;
 
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
@@ -63,7 +65,7 @@ public abstract class DAOimp<T> implements DAO<T>{
 
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract String getUpdateStatementString(T t);
+    protected abstract String getUpdateStatementString(T t) throws InvalidSQLException;
 
-    protected abstract String getDeleteStatementString(long key);
+    protected abstract String getDeleteStatementString(long key) throws InvalidSQLException;
 }
