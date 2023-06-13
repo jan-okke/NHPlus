@@ -4,8 +4,15 @@ import exceptions.InvalidSQLException;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
+import utils.Encryption;
 import utils.Validation;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +24,10 @@ import java.util.ArrayList;
  * Implements the Interface <code>DAOImp</code>. Overrides methods to generate specific patient-SQL-queries.
  */
 public class PatientDAO extends DAOimp<Patient> {
+
+    protected String encryptPatient(String input) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return Encryption.encryptString(input);
+    }
 
     /**
      * constructs Object. Calls the Constructor from <code>DAOImp</code> to store the connection.
@@ -38,9 +49,12 @@ public class PatientDAO extends DAOimp<Patient> {
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
     }
 
-    protected String getCreateArchiveStatementString(Patient patient) {
-        return String.format("INSERT INTO patient_archive (firstname, surname, dateOfBirth, carelevel, roomnumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-                patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
+    protected String getCreateArchiveStatementString(Patient patient) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        System.out.println(encryptPatient(patient.getDateOfBirth()));
+        return String.format("INSERT INTO patient_archive (pid, firstname, surname, dateOfBirth, carelevel, roomnumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+               patient.getPid(), encryptPatient(patient.getFirstName()), encryptPatient(patient.getSurname()),
+                encryptPatient(patient.getDateOfBirth()), encryptPatient(patient.getCareLevel()),
+                encryptPatient(patient.getRoomnumber()), LocalDate.now());
     }
 
     /**
@@ -121,7 +135,7 @@ public class PatientDAO extends DAOimp<Patient> {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
 
-    public void archiveByPid(long key) throws SQLException {
+    public void archiveByPid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Statement st = conn.createStatement();
         //Liest aus Patient einen Eintrag aus, konvertiert ihn in ein Patient objekt und schreibt dieses in die Patient_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));

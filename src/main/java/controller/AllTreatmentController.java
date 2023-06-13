@@ -15,7 +15,14 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import datastorage.DAOFactory;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +140,7 @@ public class AllTreatmentController {
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }
-            } catch (SQLException | InvalidSQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -164,7 +171,8 @@ public class AllTreatmentController {
 
         try {
             dao.archiveByTid(t.getTid());
-        } catch (SQLException | InvalidSQLException e) {
+        } catch (SQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
+                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
             e.printStackTrace();
         }
     }
