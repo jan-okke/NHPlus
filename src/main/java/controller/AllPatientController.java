@@ -12,6 +12,13 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import model.Patient;
 import utils.DateConverter;
 import datastorage.DAOFactory;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -172,7 +179,8 @@ public class AllPatientController {
             tDao.archiveByPid(selectedItem.getPid());
             dao.archiveByPid(selectedItem.getPid());
             this.tableView.getItems().remove(selectedItem);
-        } catch (SQLException | InvalidSQLException e) {
+        } catch (SQLException | InvalidSQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
+                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
             e.printStackTrace();
         }
     }
