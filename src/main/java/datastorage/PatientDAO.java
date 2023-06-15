@@ -49,7 +49,8 @@ public class PatientDAO extends DAOimp<Patient> {
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
     }
 
-    protected String getCreateArchiveStatementString(Patient patient) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+    protected String getCreateArchiveStatementString(Patient patient) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
+        Validation.validatePatient(patient);
         System.out.println(encryptPatient(patient.getDateOfBirth()));
         return String.format("INSERT INTO patient_archive (pid, firstname, surname, dateOfBirth, carelevel, roomnumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                patient.getPid(), encryptPatient(patient.getFirstName()), encryptPatient(patient.getSurname()),
@@ -136,6 +137,7 @@ public class PatientDAO extends DAOimp<Patient> {
     }
 
     public void archiveByPid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
+        Validation.validateLong(key);
         Statement st = conn.createStatement();
         //Liest aus Patient einen Eintrag aus, konvertiert ihn in ein Patient objekt und schreibt dieses in die Patient_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByIDStatementString(key));

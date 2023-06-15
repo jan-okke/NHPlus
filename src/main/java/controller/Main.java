@@ -42,7 +42,11 @@ public class Main extends Application {
      */
     private void checkAndDeleteArchives() {
         DAOFactory dao = DAOFactory.getDAOFactory();
-        dao.createTreatmentDAO();//.deleteArchivedTreatmentsAfterYears(10);
+        try {
+            dao.createTreatmentDAO().deleteArchivedTreatmentsAfterYears(10);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

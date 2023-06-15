@@ -140,7 +140,7 @@ public class AllTreatmentController {
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | InvalidSQLException e) {
                 e.printStackTrace();
             }
         }
@@ -172,7 +172,8 @@ public class AllTreatmentController {
         try {
             dao.archiveByTid(t.getTid());
         } catch (SQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
-                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
+                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException |
+                 InvalidSQLException e) {
             e.printStackTrace();
         }
     }
