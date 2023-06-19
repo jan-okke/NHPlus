@@ -20,6 +20,8 @@ public class Caregiver extends Person {
 
         this.cid = cid;
         this.phoneNumber = phoneNumber;
+        this.surname = surname;
+        this.firstName = firstName;
     }
 
     /**
@@ -45,6 +47,17 @@ public class Caregiver extends Person {
      * @return The phone number.
      */
     public String getPhoneNumber() { return this.phoneNumber; }
+
+    @Override
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    @Override
+    public String getSurname() {
+        return this.surname;
+    }
+
 
     /**
      * Sets the phone number.

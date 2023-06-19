@@ -14,6 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -106,8 +112,9 @@ public class AllCaregiverController {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            dao.deleteById(selectedItem.getCid());
-        } catch (SQLException | InvalidSQLException ex) {
+            dao.archiveByCid(selectedItem.getCid());
+        } catch (SQLException | InvalidSQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
+                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();
