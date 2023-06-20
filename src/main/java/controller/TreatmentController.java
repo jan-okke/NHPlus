@@ -35,11 +35,6 @@ public class TreatmentController {
     private TextArea taRemarks;
     @FXML
     private DatePicker datepicker;
-    @FXML
-    private Button btnChange;
-    @FXML
-    private Button btnCancel;
-
     private AllTreatmentController controller;
     private Stage stage;
     private Patient patient;
@@ -72,7 +67,7 @@ public class TreatmentController {
      */
     private void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
-        this.lblCaregiverName.setText(caregiver.getSurname() + ", " + caregiver.getFirstName());
+        this.lblCaregiverName.setText(  caregiver.getSurname() + ", " + caregiver.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
         this.datepicker.setValue(date);
