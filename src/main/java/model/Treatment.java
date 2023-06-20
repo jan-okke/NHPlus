@@ -147,6 +147,12 @@ public class Treatment {
     }
 
     /**
+     * Sets the Caregiver Id.
+     * @param cid The Id of the associated Caregiver.
+     */
+    public void setCid(long cid) {this.cid = cid;}
+
+    /**
      * Gets the long description.
      * @return The long description.
      */
