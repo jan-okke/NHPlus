@@ -45,8 +45,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getCreateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
-                "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
+        return String.format("INSERT INTO treatment (pid, cid, treatment_date, begin, end, description, remarks) VALUES " +
+                "(%d, %d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getCid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
                 treatment.getRemarks());
     }
@@ -65,9 +65,9 @@ public class TreatmentDAO extends DAOimp<Treatment> {
      */
     protected String getCreateArchiveStatementString(Treatment treatment) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("INSERT INTO treatment_archive (tid, pid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
-                        "(%d, %d, '%s', '%s', '%s', '%s', '%s', '%s')",
-                treatment.getTid(), treatment.getPid(), encryptTreatment(treatment.getDate()),
+        return String.format("INSERT INTO treatment_archive (tid, pid, cid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
+                        "(%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s')",
+                treatment.getTid(), treatment.getPid(), treatment.getCid(), encryptTreatment(treatment.getDate()),
                 encryptTreatment(treatment.getBegin()), encryptTreatment(treatment.getEnd()), encryptTreatment(treatment.getDescription()),
                 encryptTreatment(treatment.getRemarks()), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
     }
@@ -153,8 +153,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getUpdateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
-                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
+        return String.format("UPDATE treatment SET pid = %d, cid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
+                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getCid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
                 treatment.getTid());
     }
@@ -261,6 +261,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             }
         }
     }
+
 
     public void deleteTreatmentsAfterYears(int years) throws SQLException, InvalidSQLException {
         Statement st = conn.createStatement();
