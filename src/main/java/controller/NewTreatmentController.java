@@ -121,6 +121,9 @@ public class NewTreatmentController {
         }
     }
 
+    /**
+     * Creates the combobox data.
+     */
     private void createCareComboBoxData(){
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         try {
@@ -133,6 +136,9 @@ public class NewTreatmentController {
         }
     }
 
+    /**
+     * Handles selecting an item from the combobox.
+     */
     @FXML
     public void handleCareComboBox(){
         String c = this.careComboBox.getSelectionModel().getSelectedItem();
@@ -141,6 +147,11 @@ public class NewTreatmentController {
         this.caregiver = care;
     }
 
+    /**
+     * Searches in all caregivers and returns the caregiver with the given name.
+     * @param surname The surname of the caregiver.
+     * @return The caregiver to find or null if no caregiver with the given name exists.
+     */
     private Caregiver searchInList(String surname){
         for (int i =0; i<this.caregiverList.size();i++){
             if(this.caregiverList.get(i).getSurname().equals(surname)){

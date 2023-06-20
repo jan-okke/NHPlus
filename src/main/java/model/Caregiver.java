@@ -48,17 +48,6 @@ public class Caregiver extends Person {
      */
     public String getPhoneNumber() { return this.phoneNumber; }
 
-    @Override
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    @Override
-    public String getSurname() {
-        return this.surname;
-    }
-
-
     /**
      * Sets the phone number.
      * @param phoneNumber The new phone number.

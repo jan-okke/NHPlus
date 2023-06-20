@@ -26,6 +26,17 @@ import java.util.List;
  */
 public class TreatmentDAO extends DAOimp<Treatment> {
 
+    /**
+     * Encrypts a string from a treatment.
+     * @param input The string to encrypt.
+     * @return The encrypted string.
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
     protected String encryptTreatment(String input) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return Encryption.encryptString(input);
     }
@@ -263,6 +274,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
 
+    /**
+     * Automatically deletes a treatment after a given amount of years.
+     * @param years The years to delete after.
+     * @throws SQLException
+     * @throws InvalidSQLException
+     */
     public void deleteTreatmentsAfterYears(int years) throws SQLException, InvalidSQLException {
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllStatementString());
@@ -276,6 +293,18 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         }
     }
 
+    /**
+     * Archives a treatment by the primary key of a caregiver.
+     * @param key The primary key of the caregiver.
+     * @throws SQLException
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidSQLException
+     */
     public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
