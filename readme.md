@@ -99,4 +99,3 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 - Beim Ändern einer Behandlung wird nur der Name des Caregivers angezeigt
 - SQL Injections sind nicht komplett verhindert, Eingaben wie 1 == 1 sind immer noch per Edgecases möglich
-- Loginmaske Reihenfolge der Eingabefelder ist nicht optimal
