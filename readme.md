@@ -1,6 +1,6 @@
 # NHPlus
 
-##Informationen zur Lernsituation
+## Informationen zur Lernsituation
 Du bist Mitarbeiter der HiTec GmbH, die seit über 15 Jahren IT-Dienstleister und seit einigen Jahren ISO/IEC 27001 zertifiziert ist. Die HiTec GmbH ist ein mittelgroßes IT-Systemhaus und ist auf dem IT-Markt mit folgenden Dienstleistungen und Produkten vetreten: 
 
 Entwicklung: Erstellung eigener Softwareprodukte
@@ -15,7 +15,7 @@ Für jede Dienstleistung gibt es Abteilungen mit spezialisierten Mitarbeitern. J
 
  
 
-##Projektumfeld und Projektdefinition
+## Projektumfeld und Projektdefinition
 
 Du arbeitest als Softwareentwickler in der Entwicklungsabteilung. Aktuell bist du dem Team zugeordnet, das das Projekt "NHPlus" betreut. Dessen Auftraggeber - das Betreuungs- und Pflegeheim "Curanum Schwachhausen" - ist ein Pflegeheim im Bremer Stadteil Schwachhausen - bietet seinen in eigenen Zimmern untergebrachten Bewohnern umfangreiche Therapie- und Serviceleistungen an, damit diese so lange wie möglich selbstbestimmt und unabhängig im Pflegeheim wohnen können. Curanum Schwachhausen hat bei der HiTec GmbH eine Individualsoftware zur Verwaltung der Patienten und den an ihnen durchgeführten Behandlungen in Auftrag gegeben. Aktuell werden die Behandlungen direkt nach ihrer Durchführung durch die entsprechende Pflegekraft handschriftlich auf einem Vordruck erfasst und in einem Monatsordner abgelegt. Diese Vorgehensweise führt dazu, dass Auswertungen wie z.B. welche Behandlungen ein Patient erhalten oder welche Pflegkraft eine bestimmte Behandlung durchgeführt hat, einen hohen Arbeitsaufwand nach sich ziehen. Durch NHPlus soll die Verwaltung der Patienten und ihrer Behandlungen elektronisch abgebildet und auf diese Weise vereinfacht werden.
 
@@ -37,7 +37,7 @@ Da in der Entwicklungsabteilung der HiTech GmbH agile Vorgehensweisen vorgeschri
 
  
 
-##Stand des Projektes
+## Stand des Projektes
 
 In den bisherigen Sprints wurden die Module zur Erfassung der Patienten- und Behandlungsdaten fertiggestellt. Es fehlt das Modul zur Erfassung der Pflegekräfte. Deswegen kann bisher ebenfalls nicht erfasst werden, welche Pflegekraft eine bestimmte Behandlung durchgeführt hat. In der letzten Sprint Review sind von der Curanum Schwachhausen Zweifel angebracht worden, dass die bisher entwickelte Software den Anforderungen des Datenschutzes genügt.
 
@@ -76,9 +76,27 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ### Userstory 5 - Anlegen von Pflegern
 
-- 
+- Es gibt eine Ansicht zum Anlegen von Pflegern
+- Der Benutzer kann die Daten angeben und auf Hinzufügen klicken
+- Die Daten sind in der Datenbank und Tabelle vorhanden
+
+### Userstory 6 - Löschung von Pflegern
+
+- Es gibt die Möglichkeit, Pfleger zu löschen
+- Diese sind dann in der Datenbank nicht mehr vorhanden
+- In der Tabelle werden die gelöschten Pfleger auch nicht mehr angezeigt
+
+### Userstory 7 - SQL Injections verhindern
+
+- Wenn der Nutzer eines der in Validation.invalidSigns im Eingabefeld eingibt, wird die Aktion nicht durchgeführt
 
 ## Benutzername und Passwort für das Login
 
 - Benutzername: 123
 - Passwort: 123
+
+## Nicht geschaffte Features
+
+- Beim Ändern einer Behandlung wird nur der Name des Caregivers angezeigt
+- SQL Injections sind nicht komplett verhindert, Eingaben wie 1 == 1 sind immer noch per Edgecases möglich
+- Loginmaske Reihenfolge der Eingabefelder ist nicht optimal
