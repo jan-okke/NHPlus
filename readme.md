@@ -97,5 +97,4 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ## Nicht geschaffte Features
 
-- Beim Ändern einer Behandlung wird nur der Name des Caregivers angezeigt statt der ComboBox, dieser lässt sich auch nicht ändern.
 - SQL Injections sind nicht komplett verhindert, Eingaben wie 1 == 1 sind immer noch per Edgecases möglich
