@@ -82,9 +82,9 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ### Userstory 6 - Löschung von Pflegern
 
-- Es gibt die Möglichkeit, Pfleger zu löschen
-- Diese sind dann in der Datenbank nicht mehr vorhanden
-- In der Tabelle werden die gelöschten Pfleger auch nicht mehr angezeigt
+- Es gibt die Möglichkeit, Pfleger zu archivieren
+- Diese sind dann in der Datenbank nicht mehr vorhanden (nur noch in der Archivtabelle)
+- In der Tabelle werden die archivierten Pfleger auch nicht mehr angezeigt
 
 ### Userstory 7 - SQL Injections verhindern
 
@@ -97,6 +97,5 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ## Nicht geschaffte Features
 
-- Beim Ändern einer Behandlung wird nur der Name des Caregivers angezeigt
+- Beim Ändern einer Behandlung wird nur der Name des Caregivers angezeigt statt der ComboBox, dieser lässt sich auch nicht ändern.
 - SQL Injections sind nicht komplett verhindert, Eingaben wie 1 == 1 sind immer noch per Edgecases möglich
-- Loginmaske Reihenfolge der Eingabefelder ist nicht optimal
