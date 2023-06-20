@@ -2,11 +2,21 @@ package datastorage;
 
 import exceptions.InvalidSQLException;
 import model.Caregiver;
+import model.Patient;
+import utils.Encryption;
 import utils.Validation;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -105,5 +115,26 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     protected String getDeleteStatementString(long key) throws InvalidSQLException {
         Validation.validateLong(key);
         return String.format("DELETE FROM caregiver WHERE cid = '%d'", key);
+    }
+
+    protected String getCreateArchiveStatementString(Caregiver caregiver) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return String.format("INSERT INTO caregiver_archive (cid, firstname, surname, phonenumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s')",
+                caregiver.getCid(), encryptCaregiver(caregiver.getFirstName()), encryptCaregiver(caregiver.getSurname()),
+                encryptCaregiver(caregiver.getPhoneNumber()), LocalDate.now());
+    }
+
+    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
+            Statement st = conn.createStatement();
+            ResultSet result = st.executeQuery(getReadByIDStatementString(key));
+            if(result.next()){
+                Caregiver caregiverArchive = getInstanceFromResultSet(result);
+                st.executeUpdate(getCreateArchiveStatementString(caregiverArchive));
+                st.executeUpdate(getDeleteStatementString(key));
+            }
+    }
+
+    private String encryptCaregiver(String input) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+            return Encryption.encryptString(input);
+
     }
 }

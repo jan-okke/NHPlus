@@ -4,8 +4,8 @@ package model;
  * A base person class with firstname and surname.
  */
 public abstract class Person {
-    private String firstName;
-    private String surname;
+    protected String firstName;
+    protected String surname;
 
     /**
      * Constructor with firstname and surname.

@@ -93,19 +93,27 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Validation.validateLong(key);
         return String.format("SELECT * FROM treatment WHERE pid = %d", key);
     }
+
+
+    protected String getReadByCIDStatementString(long key) {
+        return String.format("SELECT * FROM treatment WHERE cid = %d", key);
+    }
+
+
     /**
      * Parses the result into a Treatment object.
      * @param result The result from the select statement.
      * @return The Treatment object parsed from the result.
      * @throws SQLException
      */
+
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
-        LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
-        LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
-        LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-        Treatment m = new Treatment(result.getLong(1), result.getLong(2),
-                date, begin, end, result.getString(6), result.getString(7));
+        LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+        LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(5));
+        LocalTime end = DateConverter.convertStringToLocalTime(result.getString(6));
+        Treatment m = new Treatment(result.getLong(1), result.getLong(2), result.getLong(3),
+                date, begin, end, result.getString(7), result.getString(8));
         return m;
     }
     /**
@@ -127,11 +135,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
         Treatment t = null;
         while (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
-            LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
-            LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-            t = new Treatment(result.getLong(1), result.getLong(2),
-                    date, begin, end, result.getString(6), result.getString(7));
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(5));
+            LocalTime end = DateConverter.convertStringToLocalTime(result.getString(6));
+            t = new Treatment(result.getLong(1), result.getLong(2), result.getLong(3),
+                    date, begin, end, result.getString(7), result.getString(8));
             list.add(t);
         }
         return list;
@@ -252,5 +260,17 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 deleteStatement.executeUpdate(String.format("DELETE FROM treatment_archive WHERE tid = %d", tid));
             }
         }
+    }
+
+    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        Statement st = conn.createStatement();
+        //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
+        ResultSet result = st.executeQuery(getReadByCIDStatementString(key));
+        if(result.next()){
+            Treatment treatmentArchive = getInstanceFromResultSet(result);
+            st.executeUpdate(getCreateArchiveStatementString(treatmentArchive));
+            st.executeUpdate(String.format("Delete FROM treatment WHERE cid= %d", key));
+        }
+
     }
 }

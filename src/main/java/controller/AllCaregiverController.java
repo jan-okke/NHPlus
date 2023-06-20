@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.CaregiverDAO;
 import datastorage.DAOFactory;
+import datastorage.TreatmentDAO;
 import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -104,10 +111,14 @@ public class AllCaregiverController {
      */
     public void handleDeleteCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            dao.deleteById(selectedItem.getCid());
-        } catch (SQLException | InvalidSQLException ex) {
+            //Archiviren der Treatments die mit diesem Caregiver verknüpft sind
+            tDao.archiveByCid(selectedItem.getCid());
+            dao.archiveByCid(selectedItem.getCid());
+        } catch (SQLException | InvalidSQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
+                 NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException ex) {
             throw new RuntimeException(ex);
         }
         readAllAndShowInTableView();
