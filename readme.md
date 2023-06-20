@@ -57,4 +57,28 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - View geöffnet, Vermögensstand wurde nicht mehr angezeigt
 - Nutzer angelegt, bearbeitet und gelöscht, funktionierte weiterhin.
 
+### Userstory 2 - Archivierung von Behandlungsdaten
+
+- Auf Löschen geklickt, Daten waren nicht mehr in der Tabelle
+- Daten waren verschlüsselt in der Archivdatenbank
+
+### Userstory 3 - Datenlöschung nach 10 Jahren
+
+- Einen von mehreren Datensätzen in der Datenbank angepasst, sodass das Archivierungsdatum älter als 10 Jahre ist
+- Programm gestartet
+- Der Datensatz wurde erfolgreich gelöscht, aber nur der > 10 Jahre alte.
+
+### Userstory 4 - Login beim Programmstart
+
+- Beim Starten der Anwendung kommt ein Loginfenster hoch
+- Bei falschem Login passiert nichts
+- Bei korrektem Login schließt sich das Loginfenster und das Hauptfenster erscheint
+
+### Userstory 5 - Anlegen von Pflegern
+
+- 
+
 ## Benutzername und Passwort für das Login
+
+- Benutzername: 123
+- Passwort: 123
