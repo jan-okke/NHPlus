@@ -117,12 +117,35 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
         return String.format("DELETE FROM caregiver WHERE cid = '%d'", key);
     }
 
+    /**
+     * Gets the SQL string for creating an archive entry.
+     * @param caregiver The caregiver to archive.
+     * @return The SQL string.
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
     protected String getCreateArchiveStatementString(Caregiver caregiver) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return String.format("INSERT INTO caregiver_archive (cid, firstname, surname, phonenumber, archival_date) VALUES ('%s', '%s', '%s', '%s', '%s')",
                 caregiver.getCid(), encryptCaregiver(caregiver.getFirstName()), encryptCaregiver(caregiver.getSurname()),
                 encryptCaregiver(caregiver.getPhoneNumber()), LocalDate.now());
     }
 
+    /**
+     * Archives a caregiver.
+     * @param key The primary key of the caregiver.
+     * @throws SQLException
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidSQLException
+     */
     public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
             Statement st = conn.createStatement();
             ResultSet result = st.executeQuery(getReadByIDStatementString(key));
@@ -133,6 +156,17 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
             }
     }
 
+    /**
+     * Encrypts a string.
+     * @param input The non encrypted data.
+     * @return The encrypted string.
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
     private String encryptCaregiver(String input) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
             return Encryption.encryptString(input);
 
