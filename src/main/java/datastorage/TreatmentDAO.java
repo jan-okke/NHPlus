@@ -45,8 +45,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getCreateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
-                "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
+        return String.format("INSERT INTO treatment (pid, cid, treatment_date, begin, end, description, remarks) VALUES " +
+                "(%d, %d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getCid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
                 treatment.getRemarks());
     }
@@ -65,9 +65,9 @@ public class TreatmentDAO extends DAOimp<Treatment> {
      */
     protected String getCreateArchiveStatementString(Treatment treatment) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("INSERT INTO treatment_archive (tid, pid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
-                        "(%d, %d, '%s', '%s', '%s', '%s', '%s', '%s')",
-                treatment.getTid(), treatment.getPid(), encryptTreatment(treatment.getDate()),
+        return String.format("INSERT INTO treatment_archive (tid, pid, cid, treatment_date, begin, end, description, remarks, treatment_finished_date) VALUES " +
+                        "(%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s')",
+                treatment.getTid(), treatment.getPid(), treatment.getCid(), encryptTreatment(treatment.getDate()),
                 encryptTreatment(treatment.getBegin()), encryptTreatment(treatment.getEnd()), encryptTreatment(treatment.getDescription()),
                 encryptTreatment(treatment.getRemarks()), DateConverter.convertStringToLocalDate(LocalDate.now().toString()));
     }
@@ -153,8 +153,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getUpdateStatementString(Treatment treatment) throws InvalidSQLException {
         Validation.validateTreatment(treatment);
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
-                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
+        return String.format("UPDATE treatment SET pid = %d, cid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
+                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getCid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
                 treatment.getTid());
     }
@@ -253,7 +253,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery("SELECT * FROM treatment_archive");
         if (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(8));
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(9));
             if (date.plusYears(years).isBefore(LocalDate.now())) {
                 long tid = result.getLong(1);
                 Statement deleteStatement = conn.createStatement();
@@ -262,7 +262,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         }
     }
 
-    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByCIDStatementString(key));

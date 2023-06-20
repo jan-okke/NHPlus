@@ -89,7 +89,7 @@ public class NewTreatmentController {
         if (this.caregiver == null){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
-            alert.setHeaderText("Patient für die Behandlung fehlt!");
+            alert.setHeaderText("Caregiver für die Behandlung fehlt!");
             alert.setContentText("Wählen Sie über die Combobox einen Caregiver aus!");
             alert.showAndWait();
             return;
