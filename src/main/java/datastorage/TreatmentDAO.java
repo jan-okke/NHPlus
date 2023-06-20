@@ -252,8 +252,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     public void deleteArchivedTreatmentsAfterYears(int years) throws SQLException {
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery("SELECT * FROM treatment_archive");
-        if (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(8));
+        while (result.next()) {
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(9));
             if (date.plusYears(years).isBefore(LocalDate.now())) {
                 long tid = result.getLong(1);
                 Statement deleteStatement = conn.createStatement();
@@ -262,7 +262,20 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         }
     }
 
-    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+    public void deleteTreatmentsAfterYears(int years) throws SQLException, InvalidSQLException {
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(getReadAllStatementString());
+        while (result.next()) {
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            if (date.plusYears(years).isBefore(LocalDate.now())) {
+                long tid = result.getLong(1);
+                Statement deleteStatement = conn.createStatement();
+                deleteStatement.executeUpdate(getDeleteStatementString(tid));
+            }
+        }
+    }
+
+    public void archiveByCid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Statement st = conn.createStatement();
         //Liest aus Treatment einen Eintrag aus, konvertiert ihn in ein Treatment objekt und schreibt dieses in die Treatment_Archive Tabelle.
         ResultSet result = st.executeQuery(getReadByCIDStatementString(key));
