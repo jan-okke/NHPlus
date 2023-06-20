@@ -10,6 +10,7 @@ import java.time.LocalTime;
 public class Treatment {
     private long tid;
     private long pid;
+    private long cid;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
@@ -19,15 +20,17 @@ public class Treatment {
     /**
      * Creates a new treatment.
      * @param pid The primary key of the patient.
+     * @param cid The primary key of the caregiver.
      * @param date The date of the treatment.
      * @param begin The beginning time.
      * @param end The ending time.
      * @param description The short description.
      * @param remarks The long description.
      */
-    public Treatment(long pid, LocalDate date, LocalTime begin,
+    public Treatment(long pid, long cid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.pid = pid;
+        this.cid = cid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -39,16 +42,18 @@ public class Treatment {
      * * Creates a new treatment with primary key.
      * @param tid The primary key of the treatment.
      * @param pid The primary key of the patient.
+     * @param cid The primary key of the caregiver.
      * @param date The date of the treatment.
      * @param begin The beginning time.
      * @param end The ending time.
      * @param description The short description.
      * @param remarks The long description.
      */
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
+    public Treatment(long tid, long pid, long cid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.tid = tid;
         this.pid = pid;
+        this.cid = cid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -71,6 +76,8 @@ public class Treatment {
     public long getPid() {
         return this.pid;
     }
+
+    public long getCid(){ return this.cid;}
 
     /**
      * Gets the date.
@@ -162,6 +169,7 @@ public class Treatment {
     public String toString() {
         return "\nBehandlung" + "\nTID: " + this.tid +
                 "\nPID: " + this.pid +
+                "\nCID: " + this.cid +
                 "\nDate: " + this.date +
                 "\nBegin: " + this.begin +
                 "\nEnd: " + this.end +

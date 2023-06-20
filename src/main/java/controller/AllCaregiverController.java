@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.CaregiverDAO;
 import datastorage.DAOFactory;
+import datastorage.TreatmentDAO;
 import exceptions.InvalidSQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,8 +111,11 @@ public class AllCaregiverController {
      */
     public void handleDeleteCaregiver(ActionEvent e) {
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
+            //Archiviren der Treatments die mit diesem Caregiver verknüpft sind
+            tDao.archiveByCid(selectedItem.getCid());
             dao.archiveByCid(selectedItem.getCid());
         } catch (SQLException | InvalidSQLException | InvalidAlgorithmParameterException | IllegalBlockSizeException |
                  NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException ex) {
