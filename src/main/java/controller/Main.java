@@ -3,6 +3,7 @@ package controller;
 import datastorage.ConnectionBuilder;
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
+import exceptions.InvalidSQLException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -43,8 +44,10 @@ public class Main extends Application {
     private void checkAndDeleteArchives() {
         DAOFactory dao = DAOFactory.getDAOFactory();
         try {
-            dao.createTreatmentDAO().deleteArchivedTreatmentsAfterYears(10);
-        } catch (SQLException e) {
+            TreatmentDAO daoT = dao.createTreatmentDAO();
+            daoT.deleteArchivedTreatmentsAfterYears(10);
+            daoT.deleteTreatmentsAfterYears(10);
+        } catch (SQLException | InvalidSQLException e) {
             throw new RuntimeException(e);
         }
     }

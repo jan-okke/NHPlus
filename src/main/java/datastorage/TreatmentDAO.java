@@ -252,12 +252,26 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     public void deleteArchivedTreatmentsAfterYears(int years) throws SQLException {
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery("SELECT * FROM treatment_archive");
-        if (result.next()) {
+        while (result.next()) {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(9));
             if (date.plusYears(years).isBefore(LocalDate.now())) {
                 long tid = result.getLong(1);
                 Statement deleteStatement = conn.createStatement();
                 deleteStatement.executeUpdate(String.format("DELETE FROM treatment_archive WHERE tid = %d", tid));
+            }
+        }
+    }
+
+
+    public void deleteTreatmentsAfterYears(int years) throws SQLException, InvalidSQLException {
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(getReadAllStatementString());
+        while (result.next()) {
+            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            if (date.plusYears(years).isBefore(LocalDate.now())) {
+                long tid = result.getLong(1);
+                Statement deleteStatement = conn.createStatement();
+                deleteStatement.executeUpdate(getDeleteStatementString(tid));
             }
         }
     }
