@@ -25,6 +25,17 @@ import java.util.ArrayList;
  */
 public class PatientDAO extends DAOimp<Patient> {
 
+    /**
+     * Encrypts a string for the patient.
+     * @param input The string to encrypt.
+     * @return The encrypted string.
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
     protected String encryptPatient(String input) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return Encryption.encryptString(input);
     }
@@ -49,6 +60,18 @@ public class PatientDAO extends DAOimp<Patient> {
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber());
     }
 
+    /**
+     * Gets the SQL string for creating an archive.
+     * @param patient The patient to archive.
+     * @return The SQL string.
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidSQLException
+     */
     protected String getCreateArchiveStatementString(Patient patient) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Validation.validatePatient(patient);
         System.out.println(encryptPatient(patient.getDateOfBirth()));
@@ -136,6 +159,18 @@ public class PatientDAO extends DAOimp<Patient> {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
 
+    /**
+     * Archives a patient by its primary key.
+     * @param key The primary key of the patient.
+     * @throws SQLException
+     * @throws InvalidAlgorithmParameterException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidSQLException
+     */
     public void archiveByPid(long key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidSQLException {
         Validation.validateLong(key);
         Statement st = conn.createStatement();
